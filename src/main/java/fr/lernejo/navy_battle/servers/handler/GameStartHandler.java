@@ -7,15 +7,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class GameStartHandler implements HttpHandler {
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         String response;
         OutputStream os;
+        System.out.println(requestMethod);
         if (requestMethod.equals("POST")){
-            response = "{\"id\":\"1\", \"url\":\"http://localhost:8080/api/game/start" + "\", \"message\":\"hello\"}";
-            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            response = "{\"id\":\"1\", \"url\":\"http://localhost:" + exchange.getHttpContext().getServer().getAddress().getPort() +  "\", \"message\":\"hello\"}";
             exchange.sendResponseHeaders(202, response.length());
             os = exchange.getResponseBody();
             os.write(response.getBytes());
