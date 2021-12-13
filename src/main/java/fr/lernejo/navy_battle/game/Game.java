@@ -5,25 +5,27 @@ import java.util.Scanner;
 
 public class Game {
     Player[] player = new Player[2];
-    int turn = 0;
+    int turn = 1;
+    boolean end = true;
+    Scanner scanner = new Scanner(System.in);
 
     public Game() {
 
     }
 
     public void Init() {
-        Scanner scanner = new Scanner(System.in);
+
         for(int i = 0; i < 2; i++) {
-            ArrayList<Boat> boats = new ArrayList<Boat>();
-            for(int j = 0; j < 5; j++) {
+            ArrayList<Boat> boats = new ArrayList<>();
+            for(int j = 0; j < 1; j++) {
                 System.out.print("x1: ");
-                int x1 = scanner.nextInt();
+                int x1 = this.scanner.nextInt();
                 System.out.print("y1: ");
-                int y1 = scanner.nextInt();
+                int y1 = this.scanner.nextInt();
                 System.out.print("x2: ");
-                int x2 = scanner.nextInt();
+                int x2 = this.scanner.nextInt();
                 System.out.print("y2: ");
-                int y2 = scanner.nextInt();
+                int y2 = this.scanner.nextInt();
                 boats.add(new Boat(x1, y1, x2, y2));
             }
             this.player[i]  = new Player(boats);
@@ -31,20 +33,19 @@ public class Game {
         }
     }
 
-    public String getConsequence(String cell, int player) {
+    public String getConsequence(String cell) {
         int[] coordinate = getCoordinatefromcell(cell);
-        String test = test_case(this.player[player].getSea(coordinate[0], coordinate[1]));
+        String test = cell_test(this.player[(this.turn + 1) % 2].getSea(coordinate[0], coordinate[1]));
         if(test.equals("")) {
             System.out.println("erreur consequence");
             return null;
         } else {
-            this.player[player].setSea(coordinate[0], coordinate[1]);
-            this.Next_Shoot();
+            this.player[(this.turn + 1) % 2].setSea(coordinate[0], coordinate[1]);
             return test;
         }
     }
 
-    public String test_case(String case_test) {
+    public String cell_test(String case_test) {
         switch (case_test) {
             case "x" -> {
                 return "";
@@ -67,25 +68,43 @@ public class Game {
         coordinate[0] = Integer.parseInt(cell.substring(1)) - 1;
         char letter = cell.charAt(0);
         coordinate[1] = letter - 'A';
-        System.out.println(coordinate);
         return coordinate;
     }
     public boolean getshipLeft() {
-        return this.player[this.turn].shipLeft();
+        if (this.end)
+            this.end = this.player[(this.turn + 1) % 2].shipLeft();
+        return this.player[(this.turn + 1) % 2].shipLeft();
     }
 
-    public int getTurn() {
-        return this.turn;
-    }
-
-    public void Next_Shoot() {
+    public boolean Next_Shoot() {
         turn = (turn + 1) % 2;
         this.Print_Game();
+        int player = turn + 1;
+        System.out.println("Player " + player + " to play");
+        return this.end;
+    }
+
+    public String ask_cell() {
+        System.out.print("Cell: ");
+        String cell = this.scanner.next();
+        return cell;
     }
 
     public void Print_Game() {
+        System.out.println("Player 1");
+        System.out.print(" \t");
+        for(char i = 'A'; i < 'K'; i++) {
+            System.out.print(i);
+        }
+        System.out.println();
         this.player[0].Print_Sea();
         System.out.println("///////////////////////");
+        System.out.print(" \t");
+        for(char i = 'A'; i < 'K'; i++) {
+            System.out.print(i);
+        }
+        System.out.println();
         this.player[1].Print_Sea();
+        System.out.println("Player 2");
     }
 }

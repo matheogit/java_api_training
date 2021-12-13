@@ -56,7 +56,7 @@ public class Player {
     public boolean shipLeft() {
         for(int i = 0; i < 10; i++) {
             for(int j = 0; j < 10; j++) {
-                if(this.sea[i][j] == "o")
+                if(this.sea[i][j].equals("o"))
                     return true;
             }
         }
@@ -66,6 +66,7 @@ public class Player {
 
     public void Print_Sea() {
         for(int i = 0; i < 10; i++) {
+            System.out.print(i + 1 + "\t");
             for(int j = 0; j < 10; j++) {
                 System.out.print(this.sea[i][j]);
             }

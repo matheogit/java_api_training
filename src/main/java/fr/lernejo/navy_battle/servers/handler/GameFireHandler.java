@@ -15,11 +15,10 @@ public class GameFireHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String consequence = null;
-
         if (exchange.getRequestMethod().equals("GET")) {
             String params = exchange.getRequestURI().getQuery();
             String cell = params.substring(5);
-            consequence = this.game.getConsequence(cell, this.game.getTurn());
+            consequence = this.game.getConsequence(cell);
         }
         boolean shipLeft = this.game.getshipLeft();
         this.createResponse(exchange, consequence, shipLeft);
