@@ -1,6 +1,5 @@
 package fr.lernejo.navy_battle.game;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -22,19 +21,14 @@ public class Game {
                 this.player[i].Print_Sea();
                 boolean exit = false;
                 while (!exit) {
-                    int[] pos1 = new int[2], pos2 = new int[2];
+                    int[] pos1, pos2;
                     int size = BoatType.valueOf(type).getsize();
-                    System.out.print("Boat of size "+ size + " start in cell: ");
-                    String cell1 = scanner.nextLine();
-                    if(cell1.matches("^[A-J]+([1-9]|10)$")) {
-                        pos1 = getCoordinatefromcell(cell1);
-                    }
-                    System.out.print("to cell: ");
-                    String cell2 = scanner.nextLine();
-                    if(cell2.matches("^[A-J]+([1-9]|10)$")) {
-                        pos2 = getCoordinatefromcell(cell2);
-                    }
-
+                    System.out.print("Boat of size "+ size + " start from ");
+                    String cell1 = this.ask_cell();
+                    System.out.print("To ");
+                    String cell2 = this.ask_cell();
+                    pos1 = getCoordinatefromcell(cell1);
+                    pos2 = getCoordinatefromcell(cell2);
                     if(new Boat(pos1[0], pos1[1], pos2[0], pos2[1]).getSize() == size) {
                         exit = this.player[i].Add_Boat(new Boat(pos1[0], pos1[1], pos2[0], pos2[1]));
                     }
@@ -48,7 +42,7 @@ public class Game {
 
     public String getConsequence(String cell) {
         int[] coordinate = getCoordinatefromcell(cell);
-        String test = cell_test(this.player[(this.turn + 1) % 2].getSea(coordinate[0], coordinate[1]));
+        String test = cell_test(this.player[(this.turn + 1) % 2].getCase(coordinate[0], coordinate[1]));
         if(test.equals("")) {
             System.out.println("erreur consequence");
             return null;
@@ -103,13 +97,13 @@ public class Game {
         boolean exit = true;
         String cell = "";
         while(exit) {
-            System.out.print("Cell: ");
+            System.out.print("cell: ");
             cell = scanner.nextLine();
             if(cell.matches("^[A-J]+([1-9]|10)$")) {
                 exit = false;
             }
             else
-                System.out.println("Wrong cell");
+                System.out.println("Wrong cell example: C4");
         }
         return cell;
     }
