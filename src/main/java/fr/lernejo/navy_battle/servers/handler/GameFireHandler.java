@@ -33,6 +33,8 @@ public class GameFireHandler implements HttpHandler {
             os = exchange.getResponseBody();
             os.write(response.getBytes());
             os.close();
+            if(!shipLeft)
+                System.exit(1);
         } else {
             response = "Bad Request";
             exchange.sendResponseHeaders(400, response.length());

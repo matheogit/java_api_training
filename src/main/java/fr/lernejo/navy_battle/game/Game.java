@@ -8,28 +8,41 @@ public class Game {
     int turn = 1;
     boolean end = true;
     Scanner scanner = new Scanner(System.in);
-
+    String[] config = {"PORTEAVION", "CROISEUR"};
+    String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
     public Game() {
-
+        this.player[0] = new Player();
+        this.player[1] = new Player();
     }
 
     public void Init() {
-
         for(int i = 0; i < 2; i++) {
-            ArrayList<Boat> boats = new ArrayList<>();
-            for(int j = 0; j < 1; j++) {
-                System.out.print("x1: ");
-                int x1 = this.scanner.nextInt();
-                System.out.print("y1: ");
-                int y1 = this.scanner.nextInt();
-                System.out.print("x2: ");
-                int x2 = this.scanner.nextInt();
-                System.out.print("y2: ");
-                int y2 = this.scanner.nextInt();
-                boats.add(new Boat(x1, y1, x2, y2));
+            for (String type: config) {
+                System.out.println("Player " + (i + 1));
+                this.player[i].Print_Sea();
+                boolean exit = false;
+                while (!exit) {
+                    int[] pos1 = new int[2], pos2 = new int[2];
+                    int size = BoatType.valueOf(type).getsize();
+                    System.out.print("Boat of size "+ size + " start in cell: ");
+                    String cell1 = scanner.nextLine();
+                    if(cell1.matches("^[A-J]+([1-9]|10)$")) {
+                        pos1 = getCoordinatefromcell(cell1);
+                    }
+                    System.out.print("to cell: ");
+                    String cell2 = scanner.nextLine();
+                    if(cell2.matches("^[A-J]+([1-9]|10)$")) {
+                        pos2 = getCoordinatefromcell(cell2);
+                    }
+
+                    if(new Boat(pos1[0], pos1[1], pos2[0], pos2[1]).getSize() == size) {
+                        exit = this.player[i].Add_Boat(new Boat(pos1[0], pos1[1], pos2[0], pos2[1]));
+                    }
+                    else {
+                        System.out.println("Size problem");
+                    }
+                }
             }
-            this.player[i]  = new Player(boats);
-            this.player[i].Init_Sea();
         }
     }
 
@@ -40,7 +53,8 @@ public class Game {
             System.out.println("erreur consequence");
             return null;
         } else {
-            this.player[(this.turn + 1) % 2].setSea(coordinate[0], coordinate[1]);
+            this.player[(this.turn + 1) % 2].setShoot(coordinate[0], coordinate[1]);
+            test = this.player[(this.turn + 1) % 2].getsunk(test);
             return test;
         }
     }
@@ -70,6 +84,7 @@ public class Game {
         coordinate[1] = letter - 'A';
         return coordinate;
     }
+
     public boolean getshipLeft() {
         if (this.end)
             this.end = this.player[(this.turn + 1) % 2].shipLeft();
@@ -85,25 +100,24 @@ public class Game {
     }
 
     public String ask_cell() {
-        System.out.print("Cell: ");
-        String cell = this.scanner.next();
+        boolean exit = true;
+        String cell = "";
+        while(exit) {
+            System.out.print("Cell: ");
+            cell = scanner.nextLine();
+            if(cell.matches("^[A-J]+([1-9]|10)$")) {
+                exit = false;
+            }
+            else
+                System.out.println("Wrong cell");
+        }
         return cell;
     }
 
     public void Print_Game() {
         System.out.println("Player 1");
-        System.out.print(" \t");
-        for(char i = 'A'; i < 'K'; i++) {
-            System.out.print(i);
-        }
-        System.out.println();
         this.player[0].Print_Sea();
         System.out.println("///////////////////////");
-        System.out.print(" \t");
-        for(char i = 'A'; i < 'K'; i++) {
-            System.out.print(i);
-        }
-        System.out.println();
         this.player[1].Print_Sea();
         System.out.println("Player 2");
     }
