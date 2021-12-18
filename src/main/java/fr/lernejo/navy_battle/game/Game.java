@@ -3,12 +3,12 @@ package fr.lernejo.navy_battle.game;
 import java.util.Scanner;
 
 public class Game {
-    Player[] player = new Player[2];
-    int turn = 1;
-    boolean end = true;
-    Scanner scanner = new Scanner(System.in);
+    private final Player[] player = new Player[2];
+    private int turn = 1;
+    private boolean end = true;
+    private final Scanner scanner = new Scanner(System.in);
     String[] config = {"PORTEAVION", "CROISEUR"};
-    String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
+    private final String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
     public Game() {
         this.player[0] = new Player();
         this.player[1] = new Player();
