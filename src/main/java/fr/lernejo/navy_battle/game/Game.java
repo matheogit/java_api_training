@@ -7,7 +7,6 @@ public class Game {
     private int turn = 1;
     private boolean end = true;
     private final Scanner scanner = new Scanner(System.in);
-    String[] config = {"PORTEAVION", "CROISEUR"};
     private final String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
     public Game() {
         this.player[0] = new Player();
@@ -16,7 +15,7 @@ public class Game {
 
     public void Init() {
         for(int i = 0; i < 2; i++) {
-            for (String type: config) {
+            for (String type: boatlist) {
                 System.out.println("Player " + (i + 1));
                 this.player[i].Print_Sea();
                 boolean exit = false;
