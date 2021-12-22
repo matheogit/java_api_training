@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         Game game = new Game();
-        game.Init();
+        //game.Init();
         if(args.length >= 1) {
             Server server = new Server(Integer.parseInt(args[0]), game);
             server.StartServer();
