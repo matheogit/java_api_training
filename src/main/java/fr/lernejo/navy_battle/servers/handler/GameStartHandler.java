@@ -37,12 +37,6 @@ public class GameStartHandler implements HttpHandler {
         os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
-        System.out.println("yo" + Arrays.toString(exchange.getRequestBody().readAllBytes()));
-        try {
-            this.fire(exchange);
-        } catch (InterruptedException e) {
-                e.printStackTrace();
-        }
     }
 
     public void fire(HttpExchange exchange) throws IOException, InterruptedException {
