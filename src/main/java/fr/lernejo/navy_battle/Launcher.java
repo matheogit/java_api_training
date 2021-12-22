@@ -16,15 +16,8 @@ public class Launcher {
         }
         if(args.length >= 2) {
             Client client = new Client(Integer.parseInt(args[0]), game);
-
+            client.CreateStartRequest(args[1]);
+            client.CreateFireRequest(args[1], "A1");
         }
     }
-                /*boolean quit = true;
-            String cell = null;
-            while (quit) {
-                quit = game.Next_Shoot();
-                cell = game.ask_cell();
-                if (cell != null)
-                    client.CreateRequest(args[1], cell);
-            }*/
 }
