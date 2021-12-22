@@ -10,13 +10,17 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 
 public class GameStartHandler implements HttpHandler {
     private final Game game;
     private final HttpClient client;
-    public GameStartHandler(Game game) {
+    private final int port_server;
+
+    public GameStartHandler(Game game, int port) {
         this.game = game;
         this.client = HttpClient.newHttpClient();
+        this.port_server = port;
     }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -33,6 +37,7 @@ public class GameStartHandler implements HttpHandler {
         os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+        System.out.println("yo" + Arrays.toString(exchange.getRequestBody().readAllBytes()));
         try {
             this.fire(exchange);
         } catch (InterruptedException e) {
@@ -42,7 +47,8 @@ public class GameStartHandler implements HttpHandler {
 
     public void fire(HttpExchange exchange) throws IOException, InterruptedException {
         String cell = "A1";
-        String url = "http://localhost:" + exchange.getHttpContext().getServer().getAddress().getPort();
+        String url = "http://localhost:";
+        System.out.println();
         this.CreateFireRequest(url, cell);
     }
 

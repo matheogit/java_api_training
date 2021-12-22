@@ -30,4 +30,13 @@ public class Client {
         HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
     }
+    public void CreateFireRequest(String url, String cell) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder(
+                URI.create(url + "/api/game/fire?cell=" + cell))
+            .header("accept", "application/json")
+            .build();
+
+        HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
 }
