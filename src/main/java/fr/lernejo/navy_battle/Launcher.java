@@ -17,7 +17,6 @@ public class Launcher {
         if(args.length >= 2) {
             Client client = new Client(Integer.parseInt(args[0]), game);
             client.CreateStartRequest(args[1]);
-            client.CreateFireRequest(args[1], "A1");
         }
     }
 }

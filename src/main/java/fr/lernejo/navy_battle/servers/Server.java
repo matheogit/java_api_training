@@ -7,11 +7,13 @@ import fr.lernejo.navy_battle.servers.handler.GameFireHandler;
 import fr.lernejo.navy_battle.servers.handler.GameStartHandler;
 
 import java.net.InetSocketAddress;
+
 import java.util.concurrent.*;
 
 public class Server {
     private final int port;
     private final Game game;
+
     public Server(int port, Game game) {
         this.port = port;
         this.game = game;

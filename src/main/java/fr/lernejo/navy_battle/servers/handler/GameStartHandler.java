@@ -6,11 +6,17 @@ import fr.lernejo.navy_battle.game.Game;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class GameStartHandler implements HttpHandler {
     private final Game game;
+    private final HttpClient client;
     public GameStartHandler(Game game) {
         this.game = game;
+        this.client = HttpClient.newHttpClient();
     }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -27,5 +33,26 @@ public class GameStartHandler implements HttpHandler {
         os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+        try {
+            this.fire(exchange);
+        } catch (InterruptedException e) {
+                e.printStackTrace();
+        }
+    }
+
+    public void fire(HttpExchange exchange) throws IOException, InterruptedException {
+        String cell = "A1";
+        String url = "http://localhost:" + exchange.getHttpContext().getServer().getAddress().getPort();
+        this.CreateFireRequest(url, cell);
+    }
+
+    public void CreateFireRequest(String url, String cell) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder(
+                URI.create(url + "/api/game/fire?cell=" + cell))
+            .header("accept", "application/json")
+            .build();
+
+        HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
     }
 }
