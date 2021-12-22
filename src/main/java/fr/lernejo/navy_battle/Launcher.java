@@ -16,17 +16,15 @@ public class Launcher {
         }
         if(args.length >= 2) {
             Client client = new Client(Integer.parseInt(args[0]), game);
-            boolean quit = true;
+
+        }
+    }
+                /*boolean quit = true;
             String cell = null;
             while (quit) {
                 quit = game.Next_Shoot();
                 cell = game.ask_cell();
                 if (cell != null)
                     client.CreateRequest(args[1], cell);
-            }
-            System.out.println("Quited");
-        } else {
-            System.out.println("No client");
-        }
-    }
+            }*/
 }

@@ -30,17 +30,12 @@ public class GameFireHandler implements HttpHandler {
         if(consequence != null) {
             response = "{\"consequence\":\"" + consequence + "\",\"shipLeft\":\"" + shipLeft + "\"}";
             exchange.sendResponseHeaders(202, response.length());
-            os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-            if(!shipLeft)
-                System.exit(1);
         } else {
             response = "Bad Request";
             exchange.sendResponseHeaders(400, response.length());
-            os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
+        os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 }

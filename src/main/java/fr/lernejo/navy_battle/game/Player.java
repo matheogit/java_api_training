@@ -35,25 +35,15 @@ public class Player {
     private boolean setBoats(Boat boat) {
         if(boat.getPosx1() == boat.getPosx2()) {
             for(int i = boat.getPosy1(); i <= boat.getPosy2(); i++) {
-                if(getCase(boat.getPosx1(), i).equals("o")) {
-                    System.out.println("already a boat here");
-                    return false;
-                }
-                else
-                    this.setBoat(boat.getPosx1(), i);
+                if(getCase(boat.getPosx1(), i).equals("o")) return false;
+                else this.setBoat(boat.getPosx1(), i);
             }
         } else {
             for(int i = boat.getPosx1(); i <= boat.getPosx2(); i++) {
-                if(getCase(i, boat.getPosy1()).equals("o")) {
-                    System.out.println("already a boat here");
-                    System.exit(1);
-                    return false;
-                }
-                else
-                    this.setBoat(i, boat.getPosy1());
+                if(getCase(i, boat.getPosy1()).equals("o")) return false;
+                else this.setBoat(i, boat.getPosy1());
             }
-        }
-        return true;
+        } return true;
     }
 
     public void setBoat(int i, int j) {
@@ -95,21 +85,6 @@ public class Player {
         }
         System.out.println("Game end");
         return false;
-    }
-
-    public void Print_Sea() {
-        System.out.print(" \t");
-        for(char i = 'A'; i < 'K'; i++) {
-            System.out.print(i);
-        }
-        System.out.println();
-        for(int i = 0; i < 10; i++) {
-            System.out.print(i + 1 + "\t");
-            for(int j = 0; j < 10; j++) {
-                System.out.print(this.sea[i][j]);
-            }
-            System.out.println();
-        }
     }
 
 }

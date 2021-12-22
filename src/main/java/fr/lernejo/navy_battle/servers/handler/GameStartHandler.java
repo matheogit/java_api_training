@@ -12,19 +12,15 @@ public class GameStartHandler implements HttpHandler {
         String requestMethod = exchange.getRequestMethod();
         String response;
         OutputStream os;
-        System.out.println(requestMethod);
         if (requestMethod.equals("POST")){
             response = "{\"id\":\"1\", \"url\":\"http://localhost:" + exchange.getHttpContext().getServer().getAddress().getPort() +  "\", \"message\":\"hello\"}";
             exchange.sendResponseHeaders(202, response.length());
-            os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }else{
             response = "Bad Request";
             exchange.sendResponseHeaders(400, response.length());
-            os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
+        os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 }

@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Game {
     private final Player[] player = new Player[2];
-    private int turn = 1;
-    private boolean end = true;
+    private final int[] turn = new int[1];
+    private final boolean[] end = new boolean[1];
     private final Scanner scanner = new Scanner(System.in);
     private final String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
     public Game() {
@@ -13,7 +13,7 @@ public class Game {
         this.player[1] = new Player();
     }
 
-    public void Init() {
+    /*public void Init() {
         for(int i = 0; i < 2; i++) {
             for (String type: boatlist) {
                 System.out.println("Player " + (i + 1));
@@ -37,17 +37,17 @@ public class Game {
                 }
             }
         }
-    }
+    }*/
 
     public String getConsequence(String cell) {
         int[] coordinate = getCoordinatefromcell(cell);
-        String test = cell_test(this.player[(this.turn + 1) % 2].getCase(coordinate[0], coordinate[1]));
+        String test = cell_test(this.player[(this.turn[0] + 1) % 2].getCase(coordinate[0], coordinate[1]));
         if(test.equals("")) {
             System.out.println("erreur consequence");
             return null;
         } else {
-            this.player[(this.turn + 1) % 2].setShoot(coordinate[0], coordinate[1]);
-            test = this.player[(this.turn + 1) % 2].getsunk(test);
+            this.player[(this.turn[0] + 1) % 2].setShoot(coordinate[0], coordinate[1]);
+            test = this.player[(this.turn[0] + 1) % 2].getsunk(test);
             return test;
         }
     }
@@ -79,17 +79,15 @@ public class Game {
     }
 
     public boolean getshipLeft() {
-        if (this.end)
-            this.end = this.player[(this.turn + 1) % 2].shipLeft();
-        return this.player[(this.turn + 1) % 2].shipLeft();
+        if (this.end[0])
+            this.end[0] = this.player[(this.turn[0] + 1) % 2].shipLeft();
+        return this.player[(this.turn[0] + 1) % 2].shipLeft();
     }
 
     public boolean Next_Shoot() {
-        turn = (turn + 1) % 2;
-        this.Print_Game();
-        int player = turn + 1;
-        System.out.println("Player " + player + " to play");
-        return this.end;
+        this.turn[0] = (this.turn[0] + 1) % 2;
+        int player = turn[0] + 1;
+        return this.end[0];
     }
 
     public String ask_cell() {
@@ -105,13 +103,5 @@ public class Game {
                 System.out.println("Wrong cell example: C4");
         }
         return cell;
-    }
-
-    public void Print_Game() {
-        System.out.println("Player 1");
-        this.player[0].Print_Sea();
-        System.out.println("///////////////////////");
-        this.player[1].Print_Sea();
-        System.out.println("Player 2");
     }
 }
