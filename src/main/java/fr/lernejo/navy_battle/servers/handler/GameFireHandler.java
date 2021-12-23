@@ -41,8 +41,6 @@ public class GameFireHandler implements HttpHandler {
             response = "{\"consequence\":\"" + consequence + "\",\"shipLeft\":\"" + shipLeft + "\"}";
             exchange.getResponseHeaders().set( "Content-Type", "application/json" );
             exchange.sendResponseHeaders(202, response.length());
-            exchange.sendResponseHeaders(202, response.length());
-            url = mon_json(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)).get("url").toString();
         } else {
             response = "Bad Request";
             exchange.getResponseHeaders().set( "Content-Type", "application/json" );
@@ -51,26 +49,15 @@ public class GameFireHandler implements HttpHandler {
         try ( OutputStream os = exchange.getResponseBody() ) { os.write( response.getBytes() ); }
 
         try {
-            System.out.println("shoot received on port " + this.port + " trying shooting " + url);
-            boolean end = this.game.Next_Shoot(url);
-            if (!end){
+            System.out.println("shoot received on port " + this.port);
+            this.game.Next_Shoot();
+            if (!shipLeft){
+                System.out.println(shipLeft);
                 System.out.println("game end");
                 System.exit(1);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public JSONObject mon_json(InputStreamReader stream) throws IOException {
-        int b;
-        BufferedReader br = new BufferedReader(stream);
-        StringBuilder buf = new StringBuilder();
-        while ((b = br.read()) != -1)
-            buf.append((char) b);
-        String requestBody = buf.toString();
-        br.close();
-        stream.close();
-        return new JSONObject(requestBody);
     }
 }

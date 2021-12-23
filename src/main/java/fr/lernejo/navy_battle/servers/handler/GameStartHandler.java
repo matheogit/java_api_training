@@ -28,12 +28,11 @@ public class GameStartHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         String response;
-        String url = "";
         if (requestMethod.equals("POST")){
             System.out.println("request start received on port " + this.port);
             response = "{\"id\":\"1\", \"url\":\"http://localhost:" + this.port+  "\", \"message\":\"No, I will win\"}";
             exchange.sendResponseHeaders(202, response.length());
-            url = mon_json(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)).get("url").toString();
+            this.game.seturl(mon_json(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)).get("url").toString());
         }else{
             response = "Bad Request";
             exchange.sendResponseHeaders(400, response.length());
@@ -41,7 +40,7 @@ public class GameStartHandler implements HttpHandler {
         try ( OutputStream os = exchange.getResponseBody() ) { os.write( response.getBytes() ); }
         try {
             System.out.println("try shoot after start");
-            this.game.Next_Shoot(url);
+            this.game.Next_Shoot();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

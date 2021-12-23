@@ -3,14 +3,16 @@ package fr.lernejo.navy_battle.game;
 import fr.lernejo.navy_battle.servers.Client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Random;
 
 public class Game {
     private final Player[] player = new Player[2];
     private final int[] turn = new int[1];
     private final boolean[] end = new boolean[1];
+    private final String[] url = new String [2];
     private final Scanner scanner = new Scanner(System.in);
+    private final ArrayList<String> shootlist = new ArrayList();
     private final String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
     public Game() {
         this.player[0] = new Player();
@@ -67,12 +69,19 @@ public class Game {
         return this.player[(this.turn[0] + 1) % 2].shipLeft();
     }
 
-    public boolean Next_Shoot(String url) throws IOException, InterruptedException {
+    public void seturl(String url) {
+        this.url[0] = url;
+    }
+
+    public boolean Next_Shoot() throws IOException, InterruptedException {
         this.turn[0] = (this.turn[0] + 1) % 2;
-        int player = turn[0] + 1;
-        String cell = Character.toString( (char)((int)(Math.random() * 10) + (int)'A') ) + (int)(Math.random() * (10 - 1) + 1);
-        System.out.println("shoot to url " + url + " on cell" + cell);
-        new Client(4).CreateFireRequest(url, cell);
+        String cell = "";
+        do{
+            cell = Character.toString( (char)((int)(Math.random() * 10) + (int)'A') ) + (int)(Math.random() * (10 - 1) + 1);
+        } while(this.shootlist.contains(cell));
+        this.shootlist.add(cell);
+        System.out.println("shoot to url " + this.url[0] + " on cell" + cell);
+        new Client(1).CreateFireRequest(this.url[0], cell);
         return this.end[0];
     }
 
