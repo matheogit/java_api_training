@@ -86,5 +86,4 @@ public class Player {
         System.out.println("Game end");
         return false;
     }
-
 }

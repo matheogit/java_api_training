@@ -37,6 +37,9 @@ public class Client {
             .build();
 
         HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        if(response.body().contains("false")){
+            System.out.println("game end");
+            System.exit(1);
+        }
     }
 }

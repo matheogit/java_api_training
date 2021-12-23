@@ -4,14 +4,12 @@ import fr.lernejo.navy_battle.servers.Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Game {
     private final Player[] player = new Player[2];
     private final int[] turn = new int[1];
     private final boolean[] end = new boolean[1];
     private final String[] url = new String [2];
-    private final Scanner scanner = new Scanner(System.in);
     private final ArrayList<String> shootlist = new ArrayList();
     private final String[] boatlist = {"PORTEAVION", "CROISEUR", "CONTRETORPILLEURS", "CONTRETORPILLEURS", "TORPILLEUR"};
     public Game() {
@@ -21,7 +19,7 @@ public class Game {
 
     public void Init() {
         for(int i = 0; i < 2; i++)
-            this.player[i].Add_Boat(new Boat(0, 4, 4, 4));
+            this.player[i].Add_Boat(new Boat(0, 2, 1, 2));
     }
 
     public String getConsequence(String cell) {
@@ -77,26 +75,12 @@ public class Game {
         this.turn[0] = (this.turn[0] + 1) % 2;
         String cell = "";
         do{
+            System.out.print("search");
             cell = Character.toString( (char)((int)(Math.random() * 10) + (int)'A') ) + (int)(Math.random() * (10 - 1) + 1);
         } while(this.shootlist.contains(cell));
         this.shootlist.add(cell);
         System.out.println("shoot to url " + this.url[0] + " on cell" + cell);
         new Client(1).CreateFireRequest(this.url[0], cell);
         return this.end[0];
-    }
-
-    public String ask_cell() {
-        boolean exit = true;
-        String cell = "";
-        while(exit) {
-            System.out.print("cell: ");
-            cell = scanner.nextLine();
-            if(cell.matches("^[A-J]+([1-9]|10)$")) {
-                exit = false;
-            }
-            else
-                System.out.println("Wrong cell example: C4");
-        }
-        return cell;
     }
 }

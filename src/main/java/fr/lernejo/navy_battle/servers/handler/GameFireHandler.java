@@ -47,15 +47,14 @@ public class GameFireHandler implements HttpHandler {
             exchange.sendResponseHeaders(400, response.length());
         }
         try ( OutputStream os = exchange.getResponseBody() ) { os.write( response.getBytes() ); }
-
         try {
             System.out.println("shoot received on port " + this.port);
-            this.game.Next_Shoot();
             if (!shipLeft){
-                System.out.println(shipLeft);
                 System.out.println("game end");
                 System.exit(1);
             }
+            else
+                this.game.Next_Shoot();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
