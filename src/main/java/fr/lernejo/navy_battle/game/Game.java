@@ -13,6 +13,11 @@ public class Game {
         this.player[1] = new Player();
     }
 
+    public void Init() {
+        for(int i = 0; i < 2; i++)
+            this.player[i].Add_Boat(new Boat(0, 4, 4, 4));
+    }
+
     public String getConsequence(String cell) {
         int[] coordinate = getCoordinatefromcell(cell);
         String test = cell_test(this.player[(this.turn[0] + 1) % 2].getCase(coordinate[0], coordinate[1]));
@@ -79,29 +84,3 @@ public class Game {
         return cell;
     }
 }
-
-    /*public void Init() {
-        for(int i = 0; i < 2; i++) {
-            for (String type: boatlist) {
-                System.out.println("Player " + (i + 1));
-                this.player[i].Print_Sea();
-                boolean exit = false;
-                while (!exit) {
-                    int[] pos1, pos2;
-                    int size = BoatType.valueOf(type).getsize();
-                    System.out.print("Boat of size "+ size + " start from ");
-                    String cell1 = this.ask_cell();
-                    System.out.print("To ");
-                    String cell2 = this.ask_cell();
-                    pos1 = getCoordinatefromcell(cell1);
-                    pos2 = getCoordinatefromcell(cell2);
-                    if(new Boat(pos1[0], pos1[1], pos2[0], pos2[1]).getSize() == size) {
-                        exit = this.player[i].Add_Boat(new Boat(pos1[0], pos1[1], pos2[0], pos2[1]));
-                    }
-                    else {
-                        System.out.println("Size problem");
-                    }
-                }
-            }
-        }
-    }*/

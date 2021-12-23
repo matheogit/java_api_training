@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         Game game = new Game();
-        //game.Init();
+        game.Init();
         if(args.length >= 1) {
             Server server = new Server(Integer.parseInt(args[0]), game);
             server.StartServer();
@@ -17,7 +17,6 @@ public class Launcher {
         if(args.length >= 2) {
             Client client = new Client(Integer.parseInt(args[0]), game);
             client.CreateStartRequest(args[1]);
-            client.CreateFireRequest("http://localhost:" + args[0], "A1");
             client.CreateFireRequest(args[1], "A1");
         }
     }
