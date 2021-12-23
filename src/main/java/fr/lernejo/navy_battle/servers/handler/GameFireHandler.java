@@ -36,7 +36,6 @@ public class GameFireHandler implements HttpHandler {
 
     public void createResponse(HttpExchange exchange, String consequence, boolean shipLeft) throws IOException, InterruptedException {
         String response;
-        String url = "";
         if(consequence != null) {
             response = "{\"consequence\":\"" + consequence + "\",\"shipLeft\":\"" + shipLeft + "\"}";
             exchange.getResponseHeaders().set( "Content-Type", "application/json" );
@@ -47,16 +46,8 @@ public class GameFireHandler implements HttpHandler {
             exchange.sendResponseHeaders(400, response.length());
         }
         try ( OutputStream os = exchange.getResponseBody() ) { os.write( response.getBytes() ); }
-        try {
-            System.out.println("shoot received on port " + this.port);
-            if (!shipLeft){
-                System.out.println("game end");
-                System.exit(1);
-            }
-            else
-                this.game.Next_Shoot();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        try {System.out.println("shoot received on port " + this.port);
+            if (!shipLeft){ System.out.println("game end"); System.exit(1);}
+            else this.game.Next_Shoot();} catch (InterruptedException e) {e.printStackTrace();}
     }
 }

@@ -38,12 +38,7 @@ public class GameStartHandler implements HttpHandler {
             exchange.sendResponseHeaders(400, response.length());
         }
         try ( OutputStream os = exchange.getResponseBody() ) { os.write( response.getBytes() ); }
-        try {
-            System.out.println("try shoot after start");
-            this.game.Next_Shoot();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        try {this.game.Next_Shoot();} catch (InterruptedException e) {e.printStackTrace();}
     }
 
     public JSONObject mon_json(InputStreamReader stream) throws IOException {

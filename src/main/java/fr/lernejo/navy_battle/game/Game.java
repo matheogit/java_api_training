@@ -19,7 +19,7 @@ public class Game {
 
     public void Init() {
         for(int i = 0; i < 2; i++)
-            this.player[i].Add_Boat(new Boat(0, 2, 1, 2));
+            this.player[i].Add_Boat(new Boat(0, 0, 0, 1));
     }
 
     public String getConsequence(String cell) {
