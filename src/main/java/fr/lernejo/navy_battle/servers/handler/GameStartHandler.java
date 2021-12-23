@@ -4,55 +4,59 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import fr.lernejo.navy_battle.game.Game;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.json.JSONObject;
+
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+
 
 public class GameStartHandler implements HttpHandler {
     private final Game game;
     private final HttpClient client;
-    private final int port_server;
+    private final int port;
 
     public GameStartHandler(Game game, int port) {
         this.game = game;
         this.client = HttpClient.newHttpClient();
-        this.port_server = port;
+        this.port = port;
     }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         String response;
-        OutputStream os;
+        String url = "";
         if (requestMethod.equals("POST")){
-            response = "{\"id\":\"1\", \"url\":\"http://localhost:" + exchange.getHttpContext().getServer().getAddress().getPort() +  "\", \"message\":\"No, I will win\"}";
+            System.out.println("request start received on port " + this.port);
+            response = "{\"id\":\"1\", \"url\":\"http://localhost:" + this.port+  "\", \"message\":\"No, I will win\"}";
             exchange.sendResponseHeaders(202, response.length());
+            url = mon_json(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)).get("url").toString();
         }else{
             response = "Bad Request";
             exchange.sendResponseHeaders(400, response.length());
         }
-        os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        try ( OutputStream os = exchange.getResponseBody() ) { os.write( response.getBytes() ); }
+        try {
+            System.out.println("try shoot after start");
+            this.game.Next_Shoot(url);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void fire(HttpExchange exchange) throws IOException, InterruptedException {
-        String cell = "A1";
-        String url = "http://localhost:";
-        System.out.println();
-        this.CreateFireRequest(url, cell);
-    }
-
-    public void CreateFireRequest(String url, String cell) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(
-                URI.create(url + "/api/game/fire?cell=" + cell))
-            .header("accept", "application/json")
-            .build();
-
-        HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+    public JSONObject mon_json(InputStreamReader stream) throws IOException {
+        int b;
+        BufferedReader br = new BufferedReader(stream);
+        StringBuilder buf = new StringBuilder();
+        while ((b = br.read()) != -1)
+            buf.append((char) b);
+        String requestBody = buf.toString();
+        br.close();
+        stream.close();
+        System.out.println(requestBody);
+        return new JSONObject(requestBody);
     }
 }

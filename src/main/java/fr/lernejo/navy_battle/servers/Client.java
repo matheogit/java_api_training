@@ -11,12 +11,10 @@ import java.net.http.HttpResponse;
 public class Client {
     private final int port;
     private final HttpClient client;
-    private final Game game;
 
-    public Client(int port, Game game) {
+    public Client(int port) {
         this.port = port;
         this.client = HttpClient.newHttpClient();
-        this.game = game;
     }
 
     public void CreateStartRequest(String url) throws IOException, InterruptedException {
@@ -28,7 +26,7 @@ public class Client {
             .build();
 
         HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        System.out.println("start request send from port " + this.port + " to " + url);
     }
     public void CreateFireRequest(String url, String cell) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder(

@@ -1,6 +1,10 @@
 package fr.lernejo.navy_battle.game;
 
+import fr.lernejo.navy_battle.servers.Client;
+
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
     private final Player[] player = new Player[2];
@@ -63,9 +67,12 @@ public class Game {
         return this.player[(this.turn[0] + 1) % 2].shipLeft();
     }
 
-    public boolean Next_Shoot() {
+    public boolean Next_Shoot(String url) throws IOException, InterruptedException {
         this.turn[0] = (this.turn[0] + 1) % 2;
         int player = turn[0] + 1;
+        String cell = Character.toString( (char)((int)(Math.random() * 10) + (int)'A') ) + (int)(Math.random() * (10 - 1) + 1);
+        System.out.println("shoot to url " + url + " on cell" + cell);
+        new Client(4).CreateFireRequest(url, cell);
         return this.end[0];
     }
 

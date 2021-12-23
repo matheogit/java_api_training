@@ -15,9 +15,9 @@ public class Launcher {
             server.StartServer();
         }
         if(args.length >= 2) {
-            Client client = new Client(Integer.parseInt(args[0]), game);
+            Client client = new Client(Integer.parseInt(args[0]));
             client.CreateStartRequest(args[1]);
-            client.CreateFireRequest(args[1], "A1");
+            //client.CreateFireRequest(args[1], "A1");
         }
     }
 }

@@ -24,7 +24,7 @@ public class Server {
             HttpServer server = HttpServer.create(new InetSocketAddress(this.port), 0);
             server.createContext("/ping", new CallHandler());
             server.createContext("/api/game/start", new GameStartHandler(this.game, this.port));
-            server.createContext("/api/game/fire", new GameFireHandler(this.game));
+            server.createContext("/api/game/fire", new GameFireHandler(this.game, this.port));
             server.setExecutor(Executors.newFixedThreadPool(1));
             server.start();
         } catch (java.io.IOException e) {
